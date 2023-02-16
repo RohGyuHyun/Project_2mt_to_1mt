@@ -1,0 +1,73 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: _VisionModuleFilmIns - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x412 /fo"Debug/_VisionModuleFilmIns.res" /d "_DEBUG" /d "_AFXDLL" "D:\Source\AVI\_VisionModuleFilmIns\_VisionModuleFilmIns.rc"" 
+Creating temporary file "C:\DOCUME~1\1\LOCALS~1\Temp\RSP75.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_AFXEXT" /FR"Debug/" /Fp"Debug/_VisionModuleFilmIns.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp"
+"D:\Source\AVI\_VisionModuleFilmIns\_VisionModuleFilmIns.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\1\LOCALS~1\Temp\RSP75.tmp" 
+Creating temporary file "C:\DOCUME~1\1\LOCALS~1\Temp\RSP76.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_AFXEXT" /FR"Debug/" /Fp"Debug/_VisionModuleFilmIns.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\Source\AVI\_VisionModuleFilmIns\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\1\LOCALS~1\Temp\RSP76.tmp" 
+Creating temporary file "C:\DOCUME~1\1\LOCALS~1\Temp\RSP77.tmp" with contents
+[
+Halconcpp.lib include/_FuncModuleBasic.lib include/_FuncModuleHal.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/_VisionModuleFilmIns.pdb" /debug /machine:I386 /def:".\_VisionModuleFilmIns.def" /out:"Debug/_VisionModuleFilmIns.dll" /implib:"Debug/_VisionModuleFilmIns.lib" /pdbtype:sept 
+.\Debug\_VisionModule.obj
+.\Debug\_VisionModuleFilmIns.obj
+.\Debug\StdAfx.obj
+.\Debug\_VisionModuleFilmIns.res
+]
+Creating command line "link.exe @C:\DOCUME~1\1\LOCALS~1\Temp\RSP77.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+_VisionModule.cpp
+D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp(61) : warning C4101: 'area' : unreferenced local variable
+D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp(63) : warning C4101: 'i' : unreferenced local variable
+D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp(63) : warning C4101: 'num' : unreferenced local variable
+D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp(62) : warning C4101: 'min' : unreferenced local variable
+D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp(60) : warning C4101: 'left' : unreferenced local variable
+D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp(831) : warning C4101: 'aa' : unreferenced local variable
+D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp(7660) : warning C4101: 'pf_pitch' : unreferenced local variable
+D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp(7653) : warning C4101: 'punch_err' : unreferenced local variable
+D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp(7654) : warning C4101: 'CheckChipFlg' : unreferenced local variable
+D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp(7651) : warning C4101: 'i' : unreferenced local variable
+D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp(8968) : warning C4101: 'under_area' : unreferenced local variable
+D:\Source\AVI\_VisionModuleFilmIns\_VisionModule.cpp(8968) : warning C4101: 'over_area' : unreferenced local variable
+_VisionModuleFilmIns.cpp
+Generating Code...
+Linking...
+   Creating library Debug/_VisionModuleFilmIns.lib and object Debug/_VisionModuleFilmIns.exp
+Creating temporary file "C:\DOCUME~1\1\LOCALS~1\Temp\RSP7B.bat" with contents
+[
+@echo off
+copy _VisionModuleFilmIns.h ..\FilmIns\include
+copy debug\_VisionModuleFilmIns.lib ..\FilmIns\include
+copy debug\_VisionModuleFilmIns.dll ..\FilmIns\debug
+]
+Creating command line "C:\DOCUME~1\1\LOCALS~1\Temp\RSP7B.bat"
+
+        1개 파일이 복사되었습니다.
+        1개 파일이 복사되었습니다.
+        1개 파일이 복사되었습니다.
+
+
+
+<h3>Results</h3>
+_VisionModuleFilmIns.dll - 0 error(s), 12 warning(s)
+</pre>
+</body>
+</html>

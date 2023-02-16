@@ -1,0 +1,866 @@
+// _VisionModule.h: interface for the C_VisionModule class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#if !defined(AFX__VISIONMODULE_H__C04D73F5_409A_4585_B7AD_8FC556FE83ED__INCLUDED_)
+#define AFX__VISIONMODULE_H__C04D73F5_409A_4585_B7AD_8FC556FE83ED__INCLUDED_
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+__declspec(dllimport) int CALLBACK sLock(UINT FuncCode, UINT Pass1, UINT Pass2, UINT InPut1, UINT InPut2, UINT *Retrun1, UINT *Return2);
+#ifdef __cplusplus
+};
+#endif
+
+#include <math.h>
+
+#define USE_MAP_CNT  7
+#define COF_PF_PITCH 4.75
+#define COF_WIDTH    48.0
+
+#define IMG_RECT_MAX_NUM				2
+#define INS_RGN_MAX_NUM					10
+#define LIGHT_CH_MAX_NUM				4
+#define RESULT_INS_MAX_NUM				100
+#define CNT_MAX_NUM						10
+
+#define SUB_RGN_MAX_NUM					5
+
+#define RECT_PARA_MAX_NUM_BASE			10
+#define INT_PARA_MAX_NUM_BASE			10
+#define DBL_PARA_MAX_NUM_BASE			10
+#define BOOL_PARA_MAX_NUM_BASE			10
+#define INT_PARA_MAP_MAX_NUM_BASE		10
+
+#define RECT_PARA_MAX_NUM_ALIGN			10
+#define INT_PARA_MAX_NUM_ALIGN			10
+#define DBL_PARA_MAX_NUM_ALIGN			10
+#define BOOL_PARA_MAX_NUM_ALIGN			10
+#define INT_PARA_MAP_MAX_NUM_ALIGN		10
+
+#define RECT_PARA_MAX_NUM_CHIP			10
+#define INT_PARA_MAX_NUM_CHIP			30
+#define DBL_PARA_MAX_NUM_CHIP			10
+#define BOOL_PARA_MAX_NUM_CHIP			10
+#define INT_PARA_MAP_MAX_NUM_CHIP		10
+
+#define RECT_PARA_MAX_NUM_LEAD			10
+#define INT_PARA_MAX_NUM_LEAD			10
+#define DBL_PARA_MAX_NUM_LEAD			10
+#define BOOL_PARA_MAX_NUM_LEAD			10
+#define INT_PARA_MAP_MAX_NUM_LEAD		10
+
+#define RECT_PARA_MAX_NUM_FILM			10
+#define INT_PARA_MAX_NUM_FILM			20
+#define DBL_PARA_MAX_NUM_FILM			10
+#define BOOL_PARA_MAX_NUM_FILM			10
+#define INT_PARA_MAP_MAX_NUM_FILM		10
+
+#define RECT_PARA_MAX_NUM_OCV			10
+#define INT_PARA_MAX_NUM_OCV			10
+#define DBL_PARA_MAX_NUM_OCV			10
+#define BOOL_PARA_MAX_NUM_OCV			10
+#define INT_PARA_MAP_MAX_NUM_OCV		10
+#define OCV_CHAR_MAX_NUM				20
+
+#define RECT_PARA_MAX_NUM_SR			10
+#define INT_PARA_MAX_NUM_SR				10
+#define DBL_PARA_MAX_NUM_SR				10
+#define BOOL_PARA_MAX_NUM_SR			10
+#define INT_PARA_MAP_MAX_NUM_SR			10
+
+#define RECT_PARA_MAX_NUM_PPUNCH		10
+#define INT_PARA_MAX_NUM_PPUNCH			10
+#define DBL_PARA_MAX_NUM_PPUNCH			10
+#define BOOL_PARA_MAX_NUM_PPUNCH		10
+#define INT_PARA_MAP_MAX_NUM_PPUNCH		10
+
+
+
+#define DBL_RSLT_MAX_NUM				10
+
+#define IMAGE_BUF_NUM					3
+#define IMAGE_MAP_MAX_NUM				8
+#define IMAGE_NG_NUM					3
+
+#define RECT_PARA_MAX_NUM_SYS			30
+#define INT_PARA_MAX_NUM_SYS			40 //20110610 lee
+#define DBL_PARA_MAX_NUM_SYS			30
+#define BOOL_PARA_MAX_NUM_SYS			40
+
+#define NG_VIEW_MAX_NUM					3
+
+#define VISION_FACT_MIN_AREA			4
+#define VISION_FACT_MIN_WIDTH			2
+#define VISION_FACT_MIN_HEIGHT			2
+
+#define VISION_FACT_MIN_AREA_SR			16
+#define VISION_FACT_MIN_WIDTH_SR		4
+#define VISION_FACT_MIN_HEIGHT_SR		4
+
+#define LIGHT_CH_MAX_NUM				4
+
+#define PATTERN_INS_NUM					2
+
+//인식기 거리
+#define RECOG_DIST						20
+
+//Inspection parameter
+typedef struct InspectPara
+{
+	//Base///////////////////////////////////////
+	BOOL m_bParaBase[BOOL_PARA_MAX_NUM_BASE];
+	int m_iParaBase[INT_PARA_MAX_NUM_BASE];//0 : COF number, 1 : Map last number
+	double m_dParaBase[DBL_PARA_MAX_NUM_BASE];//0 : COF pitch, 1 : pf pitch
+	int m_iParaMapBase[INT_PARA_MAP_MAX_NUM_BASE];
+
+	//Align//////////////////////////////////////
+	RECT m_InsRegionAlign[SUB_RGN_MAX_NUM][RECT_PARA_MAX_NUM_ALIGN];
+
+	BOOL m_bParaAlign[BOOL_PARA_MAX_NUM_ALIGN];
+	int m_iParaAlign[INT_PARA_MAX_NUM_ALIGN];//0 : pattern threshold, 1 : pattern score, 2 : pos. limit
+	double m_dParaAlign[DBL_PARA_MAX_NUM_ALIGN];//0 : taught pattern x, 1 : Taught pattern y
+	int m_iParaMapAlign[INT_PARA_MAP_MAX_NUM_ALIGN];//until 0
+
+	typePatPara m_PatParaAlign;
+	long m_PatIDAlign, m_PatIDAlign2; // 20110531 Dongwhe*
+	BOOL m_bCreatMdIDAlign;
+
+	double m_dPatternPosXAlign[SUB_RGN_MAX_NUM][PATTERN_INS_NUM];
+	double m_dPatternPosYAlign[SUB_RGN_MAX_NUM][PATTERN_INS_NUM];
+
+	//Chip//////////////////////////////////////
+	RECT m_InsRegionChip[SUB_RGN_MAX_NUM][RECT_PARA_MAX_NUM_CHIP];
+	BOOL m_bParaChip[BOOL_PARA_MAX_NUM_CHIP];
+	int m_iParaChip[INT_PARA_MAX_NUM_CHIP];//0 : out tol., 1 : out threshold, 2 : out high threshold
+										   //3 : mold tol., 4 : mold threshold, 5 : mold high threshold
+										   //6 : over pot ratio tol., 7 : pot threshold, 8 : no pot ratio tol.
+										   //9 : pot part tol., 10 : pot part threshold, 11 : pot part high threshold
+										   //12 : pot 등록영역, 13 : pot 도포범위 tol., 14 : broken threshold
+										   //15 : pot2 threshold, 16 : Hide Pot Particle Tol
+											//17 : 미세 out tol., 18 : 미세 out threshold, 19 : 미세 out high threshold
+										   //20 : 미세 out 허용개수	: 미세 chip out 허용개수
+
+	double m_dParaChip[DBL_PARA_MAX_NUM_CHIP];
+	int m_iParaMapChip[INT_PARA_MAP_MAX_NUM_CHIP];//until 5
+										          //0 : find chip, 1 : chip out, 2 : broken, 3 : chip이면결함
+												  //4 : potting, 5 : pot particle 
+	//Lead//////////////////////////////////////
+	RECT m_InsRegionLead[SUB_RGN_MAX_NUM][RECT_PARA_MAX_NUM_LEAD];//0 : top(out), 1 : bottom(in), 2 : top(out 2 : 굵은것 왼쪽) 3 : top(out 3 : 굵은것 오른쪽)
+	BOOL m_bParaLead[BOOL_PARA_MAX_NUM_LEAD];
+	int m_iParaLead[INT_PARA_MAX_NUM_LEAD];//1 : top tol, 2 : top trsh 
+										   //4 : bot tol, 5 : bot trsh
+										   //6 : top-dirty tol, 7 : top-dirty trsh	
+										   //8 : scratch tol, 9: scratch trsh
+	double m_dParaLead[DBL_PARA_MAX_NUM_LEAD];//0 : top factor, 1 : bot factor, 
+
+	int m_iParaMapLead[INT_PARA_MAP_MAX_NUM_LEAD];//until 5
+
+	//Film//////////////////////////////////////
+	RECT m_InsRegionFilm[SUB_RGN_MAX_NUM][RECT_PARA_MAX_NUM_FILM];
+	BOOL m_bParaFilm[BOOL_PARA_MAX_NUM_FILM];
+	int m_iParaFilm[INT_PARA_MAX_NUM_FILM];//0 : mold factor(mean_image), 1 : mold tol., 2 : mold thrsh.
+										   //3 : PF tol. 4 : PF thrsh, 5 : PF high thrsh, 6 : mold light tol, 
+										   //7 : mold user to, 8 : mold user threshold, 9 : pf edit tol
+										   //10 : metal tol., 11 : metal thrsh.
+										   //12 : burr tol, 13 : punch min area, 14 : punch max area
+	
+	double m_dParaFilm[DBL_PARA_MAX_NUM_FILM];
+	int m_iParaMapFilm[INT_PARA_MAP_MAX_NUM_FILM];
+
+	//Film var
+	long m_FilmVarID[SUB_RGN_MAX_NUM];
+	BOOL m_bCreatFilmVarID[SUB_RGN_MAX_NUM];
+
+	//OCV////////////////////////////////////////
+	RECT m_InsRegionOCV[SUB_RGN_MAX_NUM][RECT_PARA_MAX_NUM_OCV];
+	BOOL m_bParaOCV[BOOL_PARA_MAX_NUM_OCV];
+	int m_iParaOCV[INT_PARA_MAX_NUM_OCV];//0 : pat threshold, 1 : pat score, 2 : Taught character num, 3 : var threshold, 4 : var tol
+	double m_dParaOCV[DBL_PARA_MAX_NUM_OCV];
+	int m_iParaMapOCV[INT_PARA_MAP_MAX_NUM_OCV];
+
+	//Char pat
+	RECT m_InsCharRegionOCV[OCV_CHAR_MAX_NUM];
+	double m_dCharCenterX[OCV_CHAR_MAX_NUM];
+	double m_dCharCenterY[OCV_CHAR_MAX_NUM];
+	typePatPara m_PatParaOCV[OCV_CHAR_MAX_NUM];
+	long m_PatIDOCV[OCV_CHAR_MAX_NUM];
+	BOOL m_bCreatMdIDOCV[OCV_CHAR_MAX_NUM];
+
+	//20100702 lss
+	//Punch(CAM #2)//////////////////////////////
+	RECT m_InsRegionPPunch[RECT_PARA_MAX_NUM_PPUNCH];
+	BOOL m_bParaPPunch[BOOL_PARA_MAX_NUM_PPUNCH];
+	int m_iParaPPunch[INT_PARA_MAX_NUM_PPUNCH];//0 : min area, 1 : max area, 2 : tol
+	double m_dParaPPunch[DBL_PARA_MAX_NUM_PPUNCH];
+	int m_iParaMapPPunch[INT_PARA_MAP_MAX_NUM_PPUNCH];
+
+	//Char var
+	long m_CharVarID[OCV_CHAR_MAX_NUM];
+	BOOL m_bCreatCharVarID[OCV_CHAR_MAX_NUM];
+
+	//SR/////////////////////////////////////////
+	RECT m_InsRegionSR[SUB_RGN_MAX_NUM][RECT_PARA_MAX_NUM_SR];
+	BOOL m_bParaSR[BOOL_PARA_MAX_NUM_SR];
+	int m_iParaSR[INT_PARA_MAX_NUM_SR];//0 : sr factor, 1 : sr tol., 2 : sr trsh, 3 : sr cnt., 4 : sr max tol
+									   //5 : pi hall tol, 6 : pi hall thresh, 7 : fold tol, 8 : fold thresh
+	double m_dParaSR[DBL_PARA_MAX_NUM_SR];
+	int m_iParaMapSR[INT_PARA_MAP_MAX_NUM_SR];//until 1
+
+	//SR var
+	long m_SRVarID[SUB_RGN_MAX_NUM];
+	BOOL m_bCreatSRVarID[SUB_RGN_MAX_NUM];
+
+	//Light
+	int m_iLightVar[IMAGE_MAP_MAX_NUM][LIGHT_CH_MAX_NUM];
+}typeInspectPara;
+
+//Inspection result
+typedef struct InspectRslt
+{
+	int m_iRslt[SUB_RGN_MAX_NUM];
+
+	//Align
+	double m_dCXAlign[SUB_RGN_MAX_NUM][PATTERN_INS_NUM];
+	double m_dCYAlign[SUB_RGN_MAX_NUM][PATTERN_INS_NUM];
+	double m_dScoreAlign[SUB_RGN_MAX_NUM][PATTERN_INS_NUM];
+	int m_iRsltAlign[SUB_RGN_MAX_NUM];
+	double m_dOffsetX[SUB_RGN_MAX_NUM];
+	double m_dOffsetY[SUB_RGN_MAX_NUM];
+
+	//Chip
+	long m_iChipOutNum[SUB_RGN_MAX_NUM];
+	long m_iChipBrokenNum[SUB_RGN_MAX_NUM];
+	long m_iChipMoldNum[SUB_RGN_MAX_NUM];
+	long m_iChipPotNum[SUB_RGN_MAX_NUM];
+	long m_iChipPotArea[SUB_RGN_MAX_NUM];
+	long m_iChipPotPNum[SUB_RGN_MAX_NUM];
+	long m_iChipPotRNum[SUB_RGN_MAX_NUM];
+
+	int m_iRsltChipFind[SUB_RGN_MAX_NUM];
+	int m_iRsltChipOut[SUB_RGN_MAX_NUM];
+	int m_iRsltChipBroken[SUB_RGN_MAX_NUM];
+	int m_iRsltChipMold[SUB_RGN_MAX_NUM];
+	int m_iRsltChipNPot[SUB_RGN_MAX_NUM];
+	int m_iRsltChipDPot[SUB_RGN_MAX_NUM];
+	int m_iRsltChipPotP[SUB_RGN_MAX_NUM];
+	int m_iRsltChipPotR[SUB_RGN_MAX_NUM];
+
+	int m_iRsltCheckChip[SUB_RGN_MAX_NUM];//CHOKI20110113
+
+	//Punch
+	int m_iRsltCheckPunch[SUB_RGN_MAX_NUM];//CHOKI20110113
+
+	//AlignCheck
+	int m_iRsltCheckAlign[SUB_RGN_MAX_NUM];//CHOKI20110119
+
+	//Film
+	long m_iFilmMoldNum[SUB_RGN_MAX_NUM];
+	long m_iFilmPFNum[SUB_RGN_MAX_NUM];
+	long m_iFilmMetalNum[SUB_RGN_MAX_NUM];
+
+	int m_iRsltFilmMold[SUB_RGN_MAX_NUM];
+	int m_iRsltFilmPF[SUB_RGN_MAX_NUM];
+	int m_iRsltFilmMetal[SUB_RGN_MAX_NUM];
+
+	//Lead
+	long m_iLeadTopNum[SUB_RGN_MAX_NUM];
+	long m_iLeadBotNum[SUB_RGN_MAX_NUM];
+	long m_iLeadTopNum2[SUB_RGN_MAX_NUM];
+	long m_iLeadBotNum2[SUB_RGN_MAX_NUM];
+	long m_iLeadTopNum3[SUB_RGN_MAX_NUM];
+	long m_iLeadBotNum3[SUB_RGN_MAX_NUM];
+	double m_dLeadBotWAVG[SUB_RGN_MAX_NUM];
+
+	int m_iRsltLeadTop[SUB_RGN_MAX_NUM];
+	int m_iRsltLeadBot[SUB_RGN_MAX_NUM];
+
+	//OCV
+	long m_iOCVPatNum[SUB_RGN_MAX_NUM];
+	long m_iOCVVarNum[SUB_RGN_MAX_NUM];
+
+	int m_iRsltOCV[SUB_RGN_MAX_NUM];
+
+	//SR
+	long m_iSRBubNum[SUB_RGN_MAX_NUM];
+	int m_iRsltSRBub[SUB_RGN_MAX_NUM];
+
+	long m_iPIHallNum[SUB_RGN_MAX_NUM];
+	int m_iRsltPIHall[SUB_RGN_MAX_NUM];
+
+	//Error num
+	int m_iRsltErrNum[SUB_RGN_MAX_NUM];
+
+
+	//Region skip
+	BOOL m_bRegionSkip[SUB_RGN_MAX_NUM];
+}typeInspectRslt;
+
+//System parameter
+typedef struct SystemPara
+{
+	int m_iPCIdx;//0 : PC0, 1 : PC1
+	BOOL m_bPara[BOOL_PARA_MAX_NUM_SYS];
+	int m_iPara[INT_PARA_MAX_NUM_SYS];
+	double m_dPara[DBL_PARA_MAX_NUM_SYS];//0 : pixel size
+}typeSystemPara;
+
+//System result
+typedef struct SystemRslt
+{
+	long m_lCnt[CNT_MAX_NUM];
+
+	char m_sModelName[MAX_PATH];
+	char m_sLotID[MAX_PATH];
+}typeSystemRslt;
+
+//Main parameter
+typedef struct MainSystemPara
+{
+
+}typeMainSystemPara;
+
+//Main result
+typedef struct MainSystemRslt
+{
+	long m_lCnt[CNT_MAX_NUM];
+}typeMainSystemRslt;
+
+//Log
+typedef struct ShiftRslt
+{
+	char m_sLotID[MAX_PATH];
+	long m_lDeviceID;
+	BOOL m_bAutoInspect;
+}typeShiftRslt;
+
+//Ng result
+typedef struct InspectNGRslt
+{
+	int m_iRgnIdx;//몇번째 칩에 영역인지
+	typeInspectRslt m_InsRslt;
+	typeShiftRslt m_ShiftRslt;
+}typeInspectNGRslt;
+
+//Lot info.
+typedef struct LotInfo
+{
+	char m_sNo[MAX_PATH];
+	char m_sStart[100];
+	char m_sEnd[100];
+	char m_sTime[100];
+	long m_lDeviceIdx;
+	long m_lTot;
+	long m_lGood;
+	long m_lNG;
+	float m_fRatio;
+	long m_lPunch;
+}typeLotInfo;
+
+class AFX_EXT_CLASS C_VisionData  
+{
+public:
+	C_VisionData();
+	virtual ~C_VisionData();
+
+	//Halcon image
+	Hobject m_HalImage[IMAGE_BUF_NUM][IMAGE_MAP_MAX_NUM];
+
+	//CHOKI20101025
+	//Halcon image
+	Hobject m_HalColorImage[IMAGE_BUF_NUM][IMAGE_MAP_MAX_NUM];
+	//Halcon image
+	Hobject m_HalRedImage[IMAGE_BUF_NUM][IMAGE_MAP_MAX_NUM];
+	//Halcon image
+	Hobject m_HalGreenImage[IMAGE_BUF_NUM][IMAGE_MAP_MAX_NUM];
+	//Halcon image
+	Hobject m_HalBlueImage[IMAGE_BUF_NUM][IMAGE_MAP_MAX_NUM];
+
+	//CHOKI20110510
+	Hobject m_HalRefRedImage[IMAGE_MAP_MAX_NUM];
+	Hobject m_HalRefGreenImage[IMAGE_MAP_MAX_NUM];
+	Hobject m_HalRefBlueImage[IMAGE_MAP_MAX_NUM];
+
+
+	//Halcon NG image
+	Hobject m_HalNGImage[NG_VIEW_MAX_NUM][IMAGE_MAP_MAX_NUM];
+
+	//Inspect region
+	Hobject m_HalInsRgn[SUB_RGN_MAX_NUM][INS_RGN_MAX_NUM];//0 : SR inspect region, 1 : PF hall region, 
+														  //2 : up lead, 3 : dn lead, 4 : user area, 5 : SR-out
+														  //6 : vaccum region, 7 : chip region, 8 : up left region, 9 : up right region
+
+	//Result region
+	Hobject m_HalRsltRgn[SUB_RGN_MAX_NUM][RESULT_INS_MAX_NUM];
+
+	//Master image
+	Hobject m_HalMasterImage;
+	Hobject m_HalSRMasterImage;
+	Hobject m_HalLeadMasterImage;
+	Hobject m_HalSROutMasterImage;
+	Hobject m_HalTaughtImage[IMAGE_MAP_MAX_NUM];
+
+	//Inspection parameter
+	typeInspectPara m_InsPara;
+
+	//Inspection result
+	typeInspectRslt m_InsRslt;
+
+	//System parameter
+	typeSystemPara m_SysPara;
+	//System result
+	typeSystemRslt m_SysRslt;  //사용 하지 않음.
+
+	//Shifted result
+	typeShiftRslt m_ShiftRslt[IMAGE_BUF_NUM];
+
+	//Disp result region
+	Hobject m_HalNGRsltRgn[NG_VIEW_MAX_NUM][SUB_RGN_MAX_NUM][RESULT_INS_MAX_NUM];
+
+	//NG inspection result
+	typeInspectNGRslt m_InsNGRslt[NG_VIEW_MAX_NUM];
+};
+
+class AFX_EXT_CLASS C_VisionModule  
+{
+public:
+	void UpdateSRBubPrepare();
+	void SetNGViewMode(BOOL mode, int ng_view_idx);
+	BOOL SaveInspectNGRslt(int cam_idx, int ng_view_idx, int rgn_idx, CString path);
+	BOOL LoadInspectNGRslt(int cam_idx, int ng_view_idx, CString path);
+	int GetPCNum(int cam_idx);
+	int GetMapNum(int cam_idx);
+	int GetCOFNum(int cam_idx);
+	int Inspection(int cam_idx, int buf_idx);
+	int InspectionAlign(int cam_idx, int buf_idx);
+	BOOL InspectionPunchCheck(int buf_idx);//CHOKI20100712
+	int InspectionAlignForAutoOCVTeach(int cam_idx, int buf_idx, Hobject *mod_image, Hobject *shape, 
+												   double *rx, double *ry, double *rscore, long *rn,
+												   double *offset_x, double *offset_y);
+	int InspectionChip(int cam_idx, int buf_idx);
+	int InspectionFilm(int cam_idx, int buf_idx);
+	int InspectionLead(int cam_idx, int buf_idx);
+	int InspectionOCV(int cam_idx, int buf_idx);
+
+	//20100702 lss
+	BOOL InspectionPPunch(long win , Hobject* rslt_rgn);
+
+	C_VisionModule();
+	virtual ~C_VisionModule();
+
+	//Get/Set data
+	Hobject *GetHalImage(int cam_idx, int buf_idx, int img_idx);
+	//CHOKI20101025
+	Hobject *GetHalColorImage(int cam_idx, int buf_idx, int img_idx);
+	Hobject *GetHalRedImage(int cam_idx, int buf_idx, int img_idx);
+	Hobject *GetHalGreenImage(int cam_idx, int buf_idx, int img_idx);
+	Hobject *GetHalBlueImage(int cam_idx, int buf_idx, int img_idx);
+
+	//CHOKI20110510
+	Hobject *GetHalRefRedImage(int cam_idx, int img_idx);
+	Hobject *GetHalRefGreenImage(int cam_idx, int img_idx);
+	Hobject *GetHalRefBlueImage(int cam_idx, int img_idx);
+
+	//CHOKI20101101
+	void	CopyRGBtoGrayImage(int cam_idx, int buf_idx, int img_idx);
+
+	Hobject *GetHalMasterImage(int cam_idx);
+	Hobject *GetHalSRMasterImage(int cam_idx);
+	Hobject *GetHalLeadMasterImage(int cam_idx);
+	Hobject *GetHalSROutMasterImage(int cam_idx);
+	Hobject *GetHalTaughtImage(int cam_idx, int map_idx);
+
+	void SetHalNGImage(int cam_idx, int buf_idx, int ng_view_idx);
+	Hobject *GetHalNGImage(int cam_idx, int ng_view_idx, int img_idx);
+
+	typeInspectPara GetInspectPara(int cam_idx);
+	void SetInspectPara(int cam_idx, typeInspectPara para);
+	void ResetInspectPara();
+
+	//Inspect region
+	Hobject *GetHalInspectRgn(int cam_idx, int rgn_idx, int ins_idx);
+	void ResetInspectRgn();
+
+	//Inspect////////////////////////////////////
+	//Result region
+	Hobject *GetHalRsltRgn(int cam_idx, int rgn_idx, int ins_idx);
+	void ResetInspectRsltRgn();
+
+	//Inspect result data
+	typeInspectRslt GetInspectRslt(int cam_idx);
+	void SetInspectRslt(int cam_idx, typeInspectRslt rslt);
+	void ResetInspectRslt();
+	/////////////////////////////////////////////
+
+	//NG/////////////////////////////////////////
+	//NG result region
+	Hobject *GetHalNGRsltRgn(int cam_idx, int ng_view_idx, int rgn_idx, int ins_idx);
+	void ResetInspectNGRsltRgn();
+	void SetInspectNGRsltRgn(int cam_idx, int ng_view_idx);
+	void SaveInspectNGRslt(int cam_idx, int ng_view_idx, int rgn_idx);
+
+	//NG result data
+	typeInspectNGRslt GetInspectNGRslt(int cam_idx, int ng_view_idx);
+	void SetInspectNGRslt(int cam_idx, int ng_view_idx, typeShiftRslt shift_rslt, typeInspectRslt ins_rslt);
+	void ResetInspectNGRslt();
+	/////////////////////////////////////////////
+
+	typeSystemPara GetSystemPara(int cam_idx);
+	void SetSystemPara(int cam_idx, typeSystemPara rslt);
+	void ResetSystemPara();
+
+	typeSystemRslt GetSystemRslt(int cam_idx);
+	void SetSystemRslt(int cam_idx, typeSystemRslt rslt);
+	void ResetSystemRslt();
+
+	typeMainSystemPara GetMainSysPara();
+	void SetMainSysPara(typeMainSystemPara rslt);
+	void ResetMainSysPara();
+
+	typeMainSystemRslt GetMainSysRslt();
+	void SetMainSysRslt(typeMainSystemRslt rslt);
+	void ResetMainSysRslt();
+
+	typeShiftRslt GetShiftRslt(int cam_idx, int buf_idx);
+	void SetShiftRslt(int cam_idx, int buf_idx, typeShiftRslt rslt);
+	void ResetShiftRslt();
+
+	typeLotInfo GetLotInfo();
+	void SetLotInfo(typeLotInfo lot);
+	void ResetLotInfo();
+
+	//Load/save inspection parameter
+	BOOL LoadInspectPara(CString path);
+	BOOL SaveInspectPara(CString path);
+
+	void MakeDefaultInspPara(); //20110513 lee
+
+	//Load/save system parameter
+	BOOL LoadSystemPara(CString path);
+	BOOL SaveSystemPara(CString path);
+
+	//Load/save system result
+	BOOL LoadSystemRslt(CString path);
+	BOOL SaveSystemRslt(CString path);
+
+	//Set handle
+	void SetWindow(int cam_idx, long win);
+
+	//CHOKI20100628 //CHOKI20100708( Hal_FilmMold2() -> _Hal_FilmMold() )
+	BOOL _Hal_FilmMold(long win, Hobject *align_image, Hobject *align_image2, 
+						      Hobject *mold_image, Hobject *ink_image, 
+							  Hobject *user_image, Hobject *scratch_image, 
+							  Hobject *particle_image, Hobject *ref_imageRed0,
+							  RECT ins_region, RECT chip_region, RECT ocv_region, 
+							  Hobject ocv_chars_region, Hobject sr_region, Hobject user_region, Hobject sr_out_region,
+							  long var_id,
+							  double offset_ox, double offset_oy, 
+							  double offset_ox2, double offset_oy2, 
+							  double offset_rx, double offset_ry,
+							  double offset_rx2, double offset_ry2,
+							  int abs_thresh, int var_thresh, int mold_fact, int tolerance, int tolerance_light, int user_thresh, int user_tol,
+							  int sr_thresh, int sr_hi_thresh, int sr_tol,
+							  long *rslt_num, Hobject *rslt_region, Hobject *rslt_sr_region, Hobject *rslt_notsr_region, Hobject *rslt_user_region, Hobject *rslt_sr_out_region,
+							  long min_area, long min_width, long min_height,
+							  long min_area_sr, long min_width_sr, long min_height_sr);
+
+	//CHOKI20100708
+	BOOL _Hal_FindChip(long win, Hobject *image, RECT ins_region, Hobject *rslt_chip_region,
+			  long min_area, long min_width, long min_height);
+
+	//CHOKI20100708
+	BOOL _Hal_ChipPot(long win, Hobject *image, RECT ins_region, long pot_area, int thresh, int under_tol, int over_tol, long *rslt_num, long *rslt_area, Hobject *rslt_region,
+			 long min_area, long min_width, long min_height);
+
+	//CHOKI20100708
+	BOOL _Hal_FilmPF(long win, Hobject *image, Hobject *image2,  Hobject *Ref_image,//image : back light이미지->전체찢김검사 , image2 : 좀더 밝은 back light이미지->PF영역에서만 검사
+						   RECT ins_region, RECT chip_region, Hobject pf_region, Hobject vacc_region,
+						   double offset_ox, double offset_oy, 
+						   double offset_ox2, double offset_oy2, 
+						   double offset_rx, double offset_ry,
+						   double offset_rx2, double offset_ry2,
+						   int thresh, int high_thresh, int tolerance,
+						   long *rslt_num, Hobject *rslt_region, Hobject *rslt_pf_region,
+						   long min_area, long min_width, long min_height,
+						   long min_area_sr, long min_width_sr, long min_height_sr);
+	//CHOKI20100717
+	BOOL _Hal_DnLead2(long win, Hobject *image, Hobject *image2, Hobject *image3, 
+							Hobject *image4, Hobject *image5, Hobject *image6, Hobject *image7,
+							Hobject *image8,
+							RECT ins_region, Hobject not_sr_region,	
+							Hobject dn_region,
+							double offset_ox, double offset_oy, 
+							double offset_ox2, double offset_oy2, 
+							double offset_rx, double offset_ry,
+							double offset_rx2, double offset_ry2,
+							int thres, double factor, int tolerance, 
+							double* line_width_avg, 
+							long *rslt_num, Hobject *rslt_region,  
+							long *rslt_num2, Hobject *rslt_region2,
+							Hobject *rslt_dn_region,
+						    long min_area, long min_width, long min_height);
+
+	//CHOKI20100708
+//	BOOL _Hal_DnLead(long win, Hobject *image, Hobject *image2, RECT ins_region, Hobject not_sr_region,	
+	BOOL _Hal_DnLead(long win, Hobject *image, Hobject *image2, Hobject *image3, RECT ins_region, Hobject not_sr_region,	
+							Hobject dn_region,
+							double offset_ox, double offset_oy, 
+							double offset_ox2, double offset_oy2, 
+							double offset_rx, double offset_ry,
+							double offset_rx2, double offset_ry2,
+						   int thres, double factor, int tolerance, 
+						   double* line_width_avg, 
+						   long *rslt_num, Hobject *rslt_region,  
+						   long *rslt_num2, Hobject *rslt_region2,
+						   Hobject *rslt_dn_region,
+						   long min_area, long min_width, long min_height);
+
+	//Inspection
+	BOOL  _Hal_UpLead(long win, Hobject *image0, Hobject *image, Hobject *image2, Hobject *image3,
+							RECT ins_region, RECT ins_region2, RECT ins_region3,
+							Hobject not_sr_region, 
+							Hobject up_region,
+							Hobject up_region2,
+							Hobject up_region3,
+							double offset_ox, double offset_oy, 
+							double offset_ox2, double offset_oy2, 
+							double offset_rx, double offset_ry,
+							double offset_rx2, double offset_ry2,
+						   int thresh, double factor, int tolerance, 
+						   int thresh_dirt, int tolerance_dirt,
+						   long *rslt_num, Hobject *rslt_region, 
+						   long *rslt_num2, Hobject *rslt_region2, 						   
+						   Hobject *rslt_up_region,
+						   long min_area, long min_width, long min_height, unsigned int checkleadpos);
+
+	//Inspection
+	BOOL  _Hal_UpLeadColor(long win, Hobject *image0, Hobject *image1, Hobject *image2, 
+		                    Hobject *image3, Hobject *image4, Hobject *image5,  Hobject *image6, Hobject *image7,
+							RECT ins_region, RECT ins_region2, RECT ins_region3,
+							Hobject not_sr_region, 
+							Hobject up_region,
+							Hobject up_region2,
+							Hobject up_region3,
+							double offset_ox, double offset_oy, 
+							double offset_ox2, double offset_oy2, 
+							double offset_rx, double offset_ry,
+							double offset_rx2, double offset_ry2,
+						   int thresh, double factor, int tolerance, 
+						   int thresh_dirt, int tolerance_dirt,
+						   long *rslt_num, Hobject *rslt_region, 
+						   long *rslt_num2, Hobject *rslt_region2, 						   
+						   Hobject *rslt_up_region,
+						   long min_area, long min_width, long min_height, unsigned int checkleadpos);
+
+	 
+	//20100718 lee
+//	BOOL FilmMetal(long win, Hobject *image, Hobject sr_region, Hobject chip_ins_region1, Hobject char_region,
+	BOOL FilmMetal(long win, Hobject *image, Hobject sr_region, RECT chip_region, RECT char_region,  
+							  double offset_ox, double offset_oy, 
+							  double offset_ox2, double offset_oy2, 
+							  double offset_rx, double offset_ry,
+							  double offset_rx2, double offset_ry2,
+							 int thresh, int tolerance, long *rslt_num, Hobject *rslt_region);
+	//SR 기포검사
+	BOOL SRBub(long win, Hobject *image, Hobject *hall_image, RECT ins_sr_region, RECT ins_chip_region,
+						   long var_id, double offset_ox, double offset_oy, double offset_rx, double offset_ry,
+						   int abs_thresh, int var_thresh, int mold_fact, int tolerance, 
+						   int tol_max, int tol_cnt,
+						   int hall_thresh, int hall_tol,
+						   int fold_thresh, int fold_tol,
+			               long *rslt_num, Hobject *rslt_region, Hobject *rslt_sr_region,
+						   long *rslt_hall_num, Hobject *rslt_hall_region, Hobject *rslt_hallins_region);
+
+	BOOL PotPart(long win, Hobject *image, Hobject *image2, Hobject *crack_image, Hobject *over_resin,
+		RECT ChipFindArea, Hobject chip_ins_region, Hobject pot_ins_region, Hobject sr_region,
+		double offset_ox, double offset_oy, 
+		double offset_ox2, double offset_oy2, 
+		double offset_rx, double offset_ry,
+		double offset_rx2, double offset_ry2,
+		int part_thresh, int part2_thresh, int high_thresh, int tolerance, int tolerance_hide_part, int range_tolerance, int black_pot_tol, int black_thresh,
+		long *rslt_num, Hobject *rslt_region, long *range_rslt_num, Hobject *range_rslt_region, Hobject *recog_ins_rslt_region);
+	
+
+	//CHOKI20100811
+	BOOL PotPart2(long win, Hobject *Masterimage, Hobject *image, Hobject *image2, 
+		Hobject *crack_image, Hobject *image5, //CHOKI20110619
+		Hobject *image6, //CHOKI201107010
+		Hobject chip_ins_region, RECT ins_region, Hobject pot_ins_region,
+		double offset_ox, double offset_oy, 
+		double offset_ox2, double offset_oy2, 
+		double offset_rx, double offset_ry,
+		double offset_rx2, double offset_ry2,
+		int part_thresh, int part2_thresh, int high_thresh, int tolerance, int tolerance_hide_part, int range_tolerance, int black_pot_tol, int black_thresh,
+		long *rslt_num, Hobject *rslt_region, long *range_rslt_num, Hobject *range_rslt_region, Hobject *recog_ins_rslt_region);
+	
+
+	//20100702
+	//PPunch(펀칭부 검사)
+	BOOL FindPPuchingChip(long win, Hobject *image, RECT ins_region, 
+		int min_punch_area, int max_punch_area, int bur_tol,
+		Hobject *rslt_region);
+		
+	BOOL FindPuchingChip(long win, Hobject *image, Hobject *image2, RECT ins_region, RECT ins_chip_region, int pf_edit_thresh, int pf_edit_tol, int pf_pitch,
+		int min_punch_area, int max_punch_area, int bur_tol, int pos_error, Hobject chip_ins_region,
+						 BOOL *PuchErr, Hobject *rslt_region, BOOL *CheckChipFlg);
+	BOOL FindPuchingChipSR(long win, Hobject *image, RECT ins_region);
+	BOOL CheckPuchingChip(long win, Hobject *image, RECT ins_region, 
+									 int min_punch_area, int max_punch_area, int bur_tol,
+									 Hobject *rslt_region);//CHOKI20100712
+	BOOL FindChip(long win, Hobject *image, RECT ins_region, Hobject *rslt_chip_region);
+	BOOL ChipOut(long win, Hobject *image, Hobject *image2, Hobject *image3, Hobject *image4, Hobject *image5, 
+		Hobject chip_ins_region, Hobject chip_ins_region1, 
+				 double offset_ox, double offset_oy, 
+				 double offset_ox2, double offset_oy2, 
+				 double offset_rx, double offset_ry,
+				 double offset_rx2, double offset_ry2,
+				 int thresh, int high_thresh, int tolerance, 
+				 int mthresh, int mhigh_thresh, int mtolerance, long moutcount,//CHOKI20100714
+				 long *rslt_num, Hobject *rslt_region);
+	BOOL ChipMold(long win, Hobject *image, Hobject *broken_image, Hobject chip_ins_region,
+			     double offset_ox, double offset_oy, 
+				 double offset_ox2, double offset_oy2, 
+				 double offset_rx, double offset_ry,
+				 double offset_rx2, double offset_ry2,
+							  int thresh, int high_thresh, int tolerance, int broken_thresh, 
+							  long *rslt_num, Hobject *rslt_region, long *rslt_broken_num, Hobject *rslt_broken_region);
+	BOOL ChipPot(long win, Hobject *image, RECT ins_region, long pot_area, int thresh, int under_tol, int over_tol, long *rslt_num, long *rslt_area, Hobject *rslt_region);
+	BOOL FilmMold(long win, Hobject *align_image, Hobject *align_image2, Hobject *mold_image, Hobject *ink_image, Hobject *pf_image, Hobject *scratch_image, Hobject *particle_image, Hobject *ref_imageRed0,
+				  RECT ins_region, RECT chip_region, RECT ocv_region, Hobject ocv_chars_region, Hobject sr_region, Hobject user_region, Hobject sr_out_region,
+				  long var_id, 
+				  double offset_ox, double offset_oy, 
+				  double offset_ox2, double offset_oy2, 
+				  double offset_rx, double offset_ry,
+				  double offset_rx2, double offset_ry2,
+				  int abs_thresh, int var_thresh, int mold_fact, int tolerance, int tolerance_light, int user_thresh, int user_tol,
+				  int sr_screach_thresh, int sr_screch_hi_thresh, int sr_screch_tol,
+				  long *rslt_num, Hobject *rslt_region, Hobject *rslt_sr_region, Hobject *rslt_notsr_region, Hobject *rslt_user_region, Hobject *rslt_sr_out_region);
+	BOOL FilmPF(long win, Hobject *white_image, Hobject *black_image,  Hobject *Ref_image, //CHOKI20110717
+						   RECT ins_region, RECT chip_region, Hobject rf_region, Hobject vacc_region,
+						   double offset_ox, double offset_oy, 
+						   double offset_ox2, double offset_oy2, 
+						   double offset_tx, double offset_ty,
+						   double offset_tx2, double offset_ty2,
+						   int thresh, int high_thresh, int tolerance,
+						   long *rslt_num, Hobject *rslt_region, Hobject *rslt_pf_region);
+	BOOL DnLead(long win, Hobject *image, Hobject *crack_image, Hobject *Red_image, 
+		        Hobject *Green_image,  Hobject *Red_image2, Hobject *Blue_image, Hobject *Blue_image2,
+				Hobject *Green_image2,
+		        RECT ins_region, 
+				Hobject not_sr_region, Hobject dn_region,
+				double offset_ox, double offset_oy, 
+				double offset_ox2, double offset_oy2, 
+				double offset_tx, double offset_ty,
+				double offset_tx2, double offset_ty2,
+				int thres, double factor, int tolerance, 
+				double* line_width_avg, 
+				long *rslt_num, Hobject *rslt_region, 
+				long *rslt_num2, Hobject *rslt_region2,
+				Hobject *rslt_dn_region);
+	BOOL DnLeadScratch(long win, Hobject *image, Hobject rslt_dn_region, 
+							 int thresh, int tolerance, long *rslt_num, Hobject *rslt_region);
+	BOOL UpLead(long win, Hobject *image0, Hobject *image, Hobject *crack_image, Hobject *image3, 
+		                    Hobject *image4,  Hobject *image5,  Hobject *image6, Hobject *image7,
+							RECT ins_region, RECT ins_region2, RECT ins_region3,
+							Hobject not_sr_region,	 
+							Hobject up_region,
+							Hobject dn_region,
+							Hobject up_region2,
+							Hobject up_region3,
+							double offset_ox, double offset_oy, 
+							double offset_ox2, double offset_oy2, 
+							double offset_rx, double offset_ry,
+							double offset_rx2, double offset_ry2,
+						   int threshold, double factor, int tolerance, 
+						   int threshold_dirt, int tolerance_dirt,
+						   long *rslt_num, Hobject *rslt_region, 
+						   long *rslt_num2, Hobject *rslt_region2, 
+						   Hobject *rslt_up_region);
+	BOOL UpLeadScratch(long win, Hobject *image, Hobject rslt_up_region, 
+							 int thresh, int tolerance, long *rslt_num, Hobject *rslt_region);
+	//20100415 lee
+	BOOL _Hal_ChipOut(long win, Hobject *image, Hobject *image2, Hobject chip_ins_region, Hobject chip_ins_region1,
+							  double offset_ox, double offset_oy, 
+							  double offset_ox2, double offset_oy2, 
+							  double offset_rx, double offset_ry,
+							  double offset_rx2, double offset_ry2,
+							 int thresh, int high_thresh, int tolerance, long *rslt_num, Hobject *rslt_region,
+							 long min_area, long min_width, long min_height);
+
+	//CHOKI20100714
+	BOOL _Hal_ChipOutTop(long win, Hobject *image, Hobject *image2, Hobject *image3, 
+		                     Hobject chip_ins_region, Hobject chip_ins_region1,
+							  double offset_ox, double offset_oy, 
+							  double offset_ox2, double offset_oy2, 
+							  double offset_rx, double offset_ry,
+							  double offset_rx2, double offset_ry2,
+							 int thresh, int high_thresh, int tolerance, long outcount, long *rslt_num, Hobject *rslt_region,
+							 long min_area, long min_width, long min_height);
+
+	//CHOKI20100714
+	BOOL _Hal_ChipOutBtm(long win, Hobject *image, Hobject *image2, Hobject *image3, 
+							 Hobject chip_ins_region, Hobject chip_ins_region1,
+							  double offset_ox, double offset_oy, 
+							  double offset_ox2, double offset_oy2, 
+							  double offset_rx, double offset_ry,
+							  double offset_rx2, double offset_ry2,
+							 int thresh, int high_thresh, int tolerance, long outcount, long *rslt_num, Hobject *rslt_region,
+							 long min_area, long min_width, long min_height);
+
+	//CHOKI20100810
+	BOOL _Hal_ChipOutTopBtm(long win, Hobject *image, Hobject *image2, Hobject chip_ins_region, Hobject chip_ins_region1,
+							  double offset_ox, double offset_oy, 
+							  double offset_ox2, double offset_oy2, 
+							  double offset_rx, double offset_ry,
+							  double offset_rx2, double offset_ry2,
+							 int thresh, int high_thresh, int tolerance, long outcount, long *rslt_num, Hobject *rslt_region,
+							 long min_area, long min_width, long min_height);
+
+	//CHOKI20100722
+	BOOL _Hal_ChipOut2(long win, Hobject *image, Hobject *image2, Hobject *image3, Hobject chip_ins_region, Hobject chip_ins_region1,
+							  double offset_ox, double offset_oy, 
+							  double offset_ox2, double offset_oy2, 
+							  double offset_rx, double offset_ry,
+							  double offset_rx2, double offset_ry2,
+							 int thresh, int high_thresh, int tolerance, long *rslt_num, Hobject *rslt_region,
+							 long min_area, long min_width, long min_height);
+
+	//20100416 lee
+	BOOL _Hal_ChipMold(long win, Hobject *image, Hobject *broken_image, Hobject chip_ins_region, 
+							  double offset_ox, double offset_oy, 
+							  double offset_ox2, double offset_oy2, 
+							  double offset_rx, double offset_ry,
+							  double offset_rx2, double offset_ry2,
+							  int thresh, int high_thresh, int tolerance, int broken_thresh, 
+							  long *rslt_num, Hobject *rslt_region, long *rslt_broken_num, Hobject *rslt_broken_region,
+							  long min_area, long min_width, long min_height);
+private:
+	//Check license
+	BOOL CheckLicense();
+
+	//Vision data class
+	C_VisionData *m_VDat[IMG_RECT_MAX_NUM];
+
+	//Main
+	typeMainSystemPara m_MainSysPara;
+	typeMainSystemRslt m_MainSysRslt;
+
+	//Window
+	long m_lWindow[IMG_RECT_MAX_NUM];
+
+	//Lot
+	typeLotInfo m_Lot;
+
+	//NG view mode
+	int m_iNGViewMode;
+
+	//SR bubble prepare
+	BOOL m_bSRBubPrepare[SUB_RGN_MAX_NUM];
+};
+
+#endif // !defined(AFX__VISIONMODULE_H__C04D73F5_409A_4585_B7AD_8FC556FE83ED__INCLUDED_)

@@ -1,0 +1,32 @@
+--Vieworks Camera Setting File 
+--Model Name :VH-16MC-C4
+--
+srm 0
+sbf 2 -1
+set 33000
+scm 2
+stm 1
+sts 1
+sfn 1
+ses 1
+stp 0
+sso 0
+sag 1 0
+sag 2 0
+sao 1 0
+sao 2 0
+sdb 8
+sti 0
+sdc 1
+sls 0
+shf 0
+sii 0
+sha 0 4871
+sva 0 3247
+sci 1
+sfc 0
+sfo 2047
+sfi 2
+sar 0
+ssp 1
+sps 1

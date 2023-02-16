@@ -1,0 +1,7 @@
+; _VisionModuleFilmIns.def : Declares the module parameters for the DLL.
+
+LIBRARY      "_VisionModuleFilmIns"
+DESCRIPTION  '_VisionModuleFilmIns Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here

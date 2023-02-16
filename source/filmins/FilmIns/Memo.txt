@@ -1,0 +1,18 @@
+상부1)
+	- PUNCH/PF, FILM SR, LEAD, CHIP FIND, POTTING
+	- FILM SR 알고리즘
+
+하부1)
+	- FILM SR, LEAD (A/M)
+	- FILM SR 알고리즘
+	
+상부2)
+	- CHIP
+	- 컬러이미지 처리 방법
+
+하부2)
+	- 구겨짐, 찍힘, (LEAD), (A/M)
+
+
+Inspection() 상부1, 하부1, 상부2 ??
+Inspection_bottom() 하부2 ??
